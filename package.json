@@ -1,0 +1,60 @@
+{
+  "name": "bnbcleaningapi",
+  "version": "0.0.1",
+  "description": "This api facilitates the managing of scheduling cleanings for those who manage airbnb locations",
+  "keywords": [
+    "cleaning",
+    "airbnb",
+    "scheduling"
+  ],
+  "homepage": "https://github.com/piercerod57/AirBNBBackend#readme",
+  "bugs": {
+    "url": "https://github.com/piercerod57/AirBNBBackend/issues"
+  },
+  "repository": "github:piercerod57/AirBNBBackend.git",
+  "author": "Alex Foreman",
+  "contributors": [
+    {
+      "name": "Khalid Adkins",
+      "email": "KHALID.ADKINS@UCDENVER.EDU"
+    },
+    {
+      "name": "Mac Connelly",
+      "email": "mac@macconnolly.com"
+    },
+    {
+      "name": "Alex Foreman",
+      "email": "ALEXANDER.FOREMAN@UCDENVER.EDU"
+    },
+    {
+      "name": "Pierce Hopkins",
+      "email": "PIERCE.HOPKINS@UCDENVER.EDU"
+    },
+    {
+      "name": "Nicholas Stanford",
+      "email": "NICHOLAS.STANFORD@UCDENVER.EDU"
+    }
+  ],
+  "license": "MIT",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "cors": "^2.8.5",
+    "mongoose": "^5.0.9",
+    "swagger-express-mw": "^0.1.0"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "dotenv": "^6.2.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  },
+  "api": {
+    "name": "api-mongo",
+    "basePath": "/api-mongo",
+    "main": "app.js"
+  }
+}

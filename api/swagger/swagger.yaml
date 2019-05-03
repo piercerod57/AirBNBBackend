@@ -1,0 +1,448 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: AirBnB Cleaning API
+# during dev, should point to your local machine
+host: localhost:8080
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+  - application/x-www-form-urlencoded
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /hello:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: hello_world
+    get:
+      description: Returns 'Hello' to the caller
+      # used as the method name of the controller
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  #/swagger:
+  #  x-swagger-pipe: swagger_raw
+  /properties:
+    x-swagger-router-controller: properties_controller
+    get:
+      description: Returns a list of properties to the caller
+      operationId: getproperties
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/PropertiesResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Adds a new property to the database
+      operationId: insertproperty
+      parameters:
+        - in: body
+          name: property
+          required: true
+          schema:
+            $ref: "#/definitions/Property"
+          description: The property to add to the database
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /properties/update:
+    x-swagger-router-controller: update_controller
+    get:
+      description: Update the cleaning database for all properties
+      operationId: updatecleanings
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /properties/{id}:
+    x-swagger-router-controller: properties_controller
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: string
+        description: The id of the property to get
+    get:
+      description: Returns the specified property to the caller
+      operationId: getproperty
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/PropertiesResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      description: Updates the specified movie in the database
+      operationId: updateproperty
+      parameters:
+        - in: body
+          name: property
+          required: false
+          schema:
+            $ref: "#/definitions/PropertyUpdate"
+          description: the updated property info
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Deletes the specified movie from the database
+      operationId: deleteproperty
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /properties/{id}/update:
+    x-swagger-router-controller: update_controller
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: string
+        description: The id of the property to update.
+    get:
+      description: Update the cleaning database for this property
+      operationId: updatepropertycleanings
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /cleaners:
+    x-swagger-router-controller: cleaner_controller
+    # TIME PERMITTING
+    #get:
+    #  description: Return all cleaners from the database
+    post:
+      description: Add a new cleaner to the database
+      operationId: insertcleaner
+      parameters:
+        - in: body
+          name: cleaner
+          required: true
+          schema:
+            $ref: "#/definitions/Cleaner"
+          description: The info for the new cleaner
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /cleaners/{id}:
+    x-swagger-router-controller: cleaner_controller
+    parameters:
+      - in: path
+        name: id
+        type: string
+        required: true
+        description: id of cleaner
+    get:
+      description: Get the specified cleaner from the database
+      operationId: getcleaner
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/CleanersResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    put:
+      description: Update the specified cleaner in the database
+      operationId: updatecleaner
+      parameters:
+        - in: body
+          name: cleaner
+          required: true
+          schema:
+            $ref: "#/definitions/Cleaner"
+          description: New information for the cleaner
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Delete the specified cleaner form the database
+      operationId: deletecleaner
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /cleaning/{id}:
+    x-swagger-router-controller: cleaning_controller
+    put:
+      description: Update the cleaning (Mark it as completed)
+      operationId: updatecleaning
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of cleaning event to mark cleaned
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GenericResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  # We might need to change the controller for the next two slightly so we can capture
+  # whether we are coming from properties or cleaners
+  /properties/{id}/cleanings:
+    x-swagger-router-controller: cleaning_controller
+    get:
+      description: Get cleanings for a specified property (optionally specify a range of dates)
+      operationId: getpropertycleanings
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: The id of the property
+        - in: query
+          name: start
+          required: false
+          type: string
+          description: The start date of the cleanings to return
+        - in: query
+          name: end
+          required: false
+          type: string
+          description: The end date of the cleanings to return
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/CleaningsResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /cleaners/{id}/cleanings:
+    x-swagger-router-controller: cleaning_controller
+    get:
+      description: Get cleanings for a specified cleaner (optionally specify a range of dates)
+      operationId: getcleanercleanings
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: The id of the property
+        - in: query
+          name: start
+          required: false
+          type: string
+          description: The start date of the cleanings to return
+        - in: query
+          name: end_date
+          required: false
+          type: string
+          description: The end date of the cleanings to return
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/CleaningsResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+# complex objects have schema definitions
+definitions:
+  HelloWorldResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  Property:
+    type: object
+    required:
+      - name
+      - address
+      - city
+      - state
+      - zip
+      - cleaner
+      - calendar
+    properties:
+      name:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      zip:
+        type: string
+      cleaner:
+        type: string
+      calendar:
+        type: string
+  PropertyUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      zip:
+        type: string
+      cleaner:
+        type: string
+      calendar:
+        type: string
+  PropertiesResponse: # Response for Getting any number of properties
+    required:
+      - size
+      - properties
+    properties:
+      size:
+        type: integer
+      'properties':
+        type: array
+        items:
+          $ref: "#/definitions/Property"
+  Cleaner:
+    type: object
+    required:
+      - name
+      - email
+      - phone
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+  CleanersResponse: # Used for Getting a specific cleaner
+    required:
+      - cleaner
+    properties:
+      cleaner:
+        type: array
+        items:
+          $ref: "#/definitions/Cleaner"
+  Cleaning:
+    type: object
+    required:
+      - start
+      - end
+      - property
+      - staff
+      - completed
+    properties:
+      start:
+        type: string
+        format: date
+      end:
+        type: string
+        format: date
+      property:
+        type: string
+      staff:
+        type: string
+      completed:
+        type: boolean
+  CleaningsResponse:
+    # Used as response for:
+    #      /cleaners/{id}/cleanings to return a list of cleanings for this cleaner
+    # and  /properties/{id}/cleanings to return a list of cleanings for this property
+    required:
+      - cleanings
+    properties:
+      cleanings:
+          type: array
+          items:
+            $ref: "#/definitions/Cleaning"
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  GenericResponse: # Used to send message. For example, item added!
+    required:
+      - message
+    properties:
+      message:
+        type: string
