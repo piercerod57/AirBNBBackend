@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = require('mongodb').ObjectId;
 
 mongoose.Promise = global.Promise;
 
@@ -10,8 +11,8 @@ var CleaningSchema = new Schema({
     stay: {type: String, required: true},
     start: {type: String, required: true},
     end: {type: String, required: true},
-    property: {type: Number, required: true}, // TODO Change this to ObjectId
-    cleaner: {type: Number, required: true}, // TODO Change this to ObjectId
+    property: {type: ObjectId, required: true}, // TODO This may need some tweaking to work
+    cleaner: {type: ObjectId, required: true}, // TODO This may need some tweaking to work
     cleaned: { type: Boolean, default: false}
 });
 
