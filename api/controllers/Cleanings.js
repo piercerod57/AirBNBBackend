@@ -10,8 +10,8 @@ var CleaningSchema = new Schema({
     stay: {type: String, required: true},
     start: {type: String, required: true},
     end: {type: String, required: true},
-    property: {type: Number, required: true},
-    cleaner: {type: Number, required: true},
+    property: {type: Number, required: true}, // TODO Change this to ObjectId
+    cleaner: {type: Number, required: true}, // TODO Change this to ObjectId
     cleaned: { type: Boolean, default: false}
 });
 
