@@ -19,32 +19,6 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-  #/swagger:
-  #  x-swagger-pipe: swagger_raw
   /properties:
     x-swagger-router-controller: properties_controller
     get:
@@ -56,7 +30,7 @@ paths:
           schema:
             $ref: "#/definitions/PropertiesResponse"
         default:
-          description: Error
+          description: Failure
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
@@ -75,7 +49,7 @@ paths:
           schema:
             $ref: "#/definitions/GenericResponse"
         default:
-          description: Error
+          description: Failure
           schema:
             $ref: "#/definitions/ErrorResponse"
   /properties/update:
@@ -164,10 +138,19 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /cleaners:
-    x-swagger-router-controller: cleaner_controller
-    # TIME PERMITTING
-    #get:
-    #  description: Return all cleaners from the database
+    x-swagger-router-controller: cleaners_controller
+    get:
+      description: Get all cleaners from the database
+      operationId: getcleaners
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/CleanersResponse"
+        default:
+          description: Failure
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     post:
       description: Add a new cleaner to the database
       operationId: insertcleaner
@@ -188,7 +171,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /cleaners/{id}:
-    x-swagger-router-controller: cleaner_controller
+    x-swagger-router-controller: cleaners_controller
     parameters:
       - in: path
         name: id
@@ -215,7 +198,7 @@ paths:
           name: cleaner
           required: true
           schema:
-            $ref: "#/definitions/Cleaner"
+            $ref: "#/definitions/CleanerUpdate"
           description: New information for the cleaner
       responses:
         "200":
@@ -322,12 +305,6 @@ paths:
             $ref: "#/definitions/ErrorResponse"
 # complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
   Property:
     type: object
     required:
@@ -394,11 +371,20 @@ definitions:
         type: string
       phone:
         type: string
+  CleanerUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
   CleanersResponse: # Used for Getting a specific cleaner
     required:
-      - cleaner
+      - cleaners
     properties:
-      cleaner:
+      cleaners:
         type: array
         items:
           $ref: "#/definitions/Cleaner"

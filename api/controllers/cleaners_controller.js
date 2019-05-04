@@ -12,7 +12,7 @@
  */
 var util = require('util');
 
-var Property = require('./Properties');
+var Cleaners = require('./Cleaners');
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -27,11 +27,11 @@ var Property = require('./Properties');
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-    getproperties: getproperties,
-    getproperty: getproperty,
-    insertproperty: insertproperty,
-    updateproperty: updateproperty,
-    deleteproperty: deleteproperty,
+    getcleaners: getcleaners,
+    getcleaner: getcleaner,
+    insertcleaner: insertcleaner,
+    updatecleaner: updatecleaner,
+    deletecleaner: deletecleaner,
 };
 
 /*
@@ -40,61 +40,57 @@ module.exports = {
   Param 1: a handle to the request object
   Param 2: a handle to the response object
  */
-function getproperty(req, res) {
+function getcleaners(req, res) {
+    Cleaners.find(function (err, cleaners) {
+        if (err) res.send(err);
+        res.status(200).json({
+            success: true,
+            size: cleaners.length,
+            cleaners: cleaners
+        })
+    });
+}
+
+function getcleaner(req, res) {
     var id = req.swagger.params.id.value;
-    Property.findById(id, function(err, property) {
+    Cleaners.findById(id, function(err, cleaner) {
         if(err) {
             if(err.kind === "ObjectId") {
                 res.status(404).json({
                     success: false,
-                    message: `No property with id: ${id} in the database!`
+                    message: `No cleaner with id: ${id} in the database!`
                 }).send();
             } else {
                 res.send(err);
             }
         } else {
-            if(property === null){
+            if(cleaner === null){
                 res.status(404).json({
                     success: false,
-                    message: `No property with id: ${id} in the database!`
+                    message: `No cleaner with id: ${id} in the database!`
                 });
-            } else{
-                let properties = [property];
+            } else {
+                let cleaners = [cleaner];
                 res.status(200).json({
                     success: true,
                     size: 1,
-                    properties: properties
+                    cleaners: cleaners
                 });
             }
         }
     });
 }
 
-function getproperties(req, res) {
-    Property.find(function (err, properties) {
-        if (err) res.send(err);
-        res.status(200).json({
-            success: true,
-            size: properties.length,
-            properties: properties
-        })
-    });
-}
+function insertcleaner(req, res) {
+    var cleaner = new Cleaners();
+    cleaner.name = req.swagger.params.cleaner.value.name;
+    cleaner.email = req.swagger.params.cleaner.value.email;
+    cleaner.phone = req.swagger.params.cleaner.value.phone;
 
-function insertproperty(req, res) {
-    var property = new Property();
-    property.name = req.swagger.params.property.value.name;
-    property.address = req.swagger.params.property.value.address;
-    property.city = req.swagger.params.property.value.city;
-    property.state = req.swagger.params.property.value.state;
-    property.zip = req.swagger.params.property.value.zip;
-    property.cleaner = req.swagger.params.property.value.cleaner;
-    property.calendar = req.swagger.params.property.value.calendar;
-
-    property.save(function (err) {
+    cleaner.save(function (err) {
         if(err) {
             if(err.code === 11000) {
-                return res.status(409).json({success: false, message: 'A property with that id already exists'}).send()
+                return res.status(409).json({success: false, message: 'A cleaner with that id already exists'}).send()
             } else {
                 return res.send(err);
             }
@@ -102,53 +98,49 @@ function insertproperty(req, res) {
 
         res.status(200).json({
             success: true,
-            message: `${property.name} added!`
+            message: `${cleaner.name} added!`
         });
     });
 }
 
-function updateproperty(req, res) {
+function updatecleaner(req, res) {
     var id = req.swagger.params.id.value;
-    Property.findById(id, function(err, property) {
+    Cleaners.findById(id, function(err, cleaner) {
         if (err) {
             if (err.kind === "ObjectId") {
                 res.status(404).json({
                     success: false,
-                    message: `No property with id: ${id} in the database!`
+                    message: `No cleaner with id: ${id} in the database!`
                 }).send();
             } else {
                 res.send(err);
             }
-        } else if(property) {
+        } else if(cleaner) {
             // update the property info only if it is new
-            if (req.swagger.params.property.value.name) property.name = req.swagger.params.property.value.name;
-            if (req.swagger.params.property.value.address) property.address = req.swagger.params.property.value.address;
-            if (req.swagger.params.property.value.city) property.city = req.swagger.params.property.value.city;
-            if (req.swagger.params.property.value.state) property.state = req.swagger.params.property.value.state;
-            if (req.swagger.params.property.value.zip) property.zip = req.swagger.params.property.value.zip;
-            if (req.swagger.params.property.value.cleaner) property.cleaner = req.swagger.params.property.value.cleaner;
-            if (req.swagger.params.property.value.calendar) property.calendar = req.swagger.params.property.value.calendar;
+            if (req.swagger.params.cleaner.value.name) cleaner.name = req.swagger.params.cleaner.value.name;
+            if (req.swagger.params.cleaner.value.email) cleaner.email = req.swagger.params.cleaner.value.email;
+            if (req.swagger.params.cleaner.value.phone) cleaner.phone = req.swagger.params.cleaner.value.phone;
 
-            property.save(function (err) {
+            cleaner.save(function (err) {
                 if (err) res.send(err);
 
                 res.status(200).json({
                     success: true,
-                    message: 'Property updated!'
+                    message: 'Cleaner details updated!'
                 });
             });
         }
     })
 }
 
-function deleteproperty(req, res) {
+function deletecleaner(req, res) {
     var id = req.swagger.params.id.value;
-    Property.remove({_id: id}, function(err, property) {
+    Cleaners.deleteOne({_id: id}, function(err, cleaner) {
         if (err) {
             if (err.kind === "ObjectId") {
                 res.status(404).json({
                     success: false,
-                    message: `No property with id: ${id} in the database!`
+                    message: `No cleaner with id: ${id} in the database!`
                 }).send();
             } else {
                 res.send(err);
