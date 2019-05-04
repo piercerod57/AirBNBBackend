@@ -53,7 +53,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /properties/update:
-    x-swagger-router-controller: update_controller
+    x-swagger-router-controller: cleanings_controller
     get:
       description: Update the cleaning database for all properties
       operationId: updatecleanings
@@ -118,7 +118,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /properties/{id}/update:
-    x-swagger-router-controller: update_controller
+    x-swagger-router-controller: cleanings_controller
     parameters:
       - in: path
         name: id
@@ -222,7 +222,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /cleaning/{id}:
-    x-swagger-router-controller: cleaning_controller
+    x-swagger-router-controller: cleanings_controller
     put:
       description: Update the cleaning (Mark it as completed)
       operationId: updatecleaning
@@ -244,7 +244,7 @@ paths:
   # We might need to change the controller for the next two slightly so we can capture
   # whether we are coming from properties or cleaners
   /properties/{id}/cleanings:
-    x-swagger-router-controller: cleaning_controller
+    x-swagger-router-controller: cleanings_controller
     get:
       description: Get cleanings for a specified property (optionally specify a range of dates)
       operationId: getpropertycleanings
@@ -274,7 +274,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /cleaners/{id}/cleanings:
-    x-swagger-router-controller: cleaning_controller
+    x-swagger-router-controller: cleanings_controller
     get:
       description: Get cleanings for a specified cleaner (optionally specify a range of dates)
       operationId: getcleanercleanings
