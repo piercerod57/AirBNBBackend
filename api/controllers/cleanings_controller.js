@@ -26,10 +26,9 @@ var Cleanings = require('./Cleanings');
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
 module.exports = {
-    updatecleanings: updatecleanings, // Load cleanings for all properties
-    updatecleaning: updatecleaning,  // Mark cleaning completed
-    updatepropertycleanings: updatepropertycleanings, // Load cleanings for single property by id
-    getcleanercleanings: getcleanercleanings, // Get list of all cleanings for a cleaner
-    getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
+    //updatecleanings: updatecleanings, // Load cleanings for all properties
+    //updatecleaning: updatecleaning,  // Mark cleaning completed
+    //updatepropertycleanings: updatepropertycleanings, // Load cleanings for single property by id
+    //getcleanercleanings: getcleanercleanings, // Get list of all cleanings for a cleaner
+    //getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
 };
-
