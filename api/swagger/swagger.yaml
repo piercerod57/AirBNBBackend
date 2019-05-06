@@ -87,7 +87,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
     put:
-      description: Updates the specified movie in the database
+      description: Updates the specified property in the database
       operationId: updateproperty
       parameters:
         - in: body

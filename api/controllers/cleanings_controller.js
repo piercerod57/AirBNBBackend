@@ -39,11 +39,42 @@ Date.prototype.addDays = function(days){
  */
 module.exports = {
     updatecleanings: updatecleanings, // Load cleanings for all properties
-    //updatecleaning: updatecleaning,  // Mark cleaning completed
+    updatecleaning: updatecleaning,  // Mark cleaning completed
     updatepropertycleanings: updatepropertycleanings, // Load cleanings for single property by id
-    //getcleanercleanings: getcleanercleanings, // Get list of all cleanings for a cleaner
+    getcleanercleanings: getcleanercleanings, // Get list of all cleanings for a cleaner
     //getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
 };
+
+function updatecleaning(req, res) {
+    var id = req.swagger.params.id.value;
+    Cleaning.findById(id, function(err, cleaning) {
+        if(err) {
+            if(err.kind === "ObjectId") {
+                res.status(404).json({
+                    success: false,
+                    message: `No cleaning with id: ${id} in the database!`
+                }).send();
+            } else {
+                res.send(err);
+            }
+        } else {
+            if(!req.swagger.query.done){
+                res.status(400).json({
+                    success: false,
+                    message: `Pass Boolean argument 'done' in query string.`
+                }).send();
+            } else{
+                cleaning.cleaned = req.swagger.query.done;
+                res.status(200).json({
+                    success: true,
+                    message: "Completion status updated.",
+                    size: 1,
+                    cleaning: [cleaning]
+                });
+            }
+        }
+    });
+}
 
 function updatecleanings(req, res){
     Property.find(function (err, properties) {
@@ -178,4 +209,18 @@ function updatepropertycleanings(req, res) {
             }
         }
     });
+}
+
+function getcleanercleanings (req, res) {
+    let id = req.swagger.params.id.value;
+    Cleaning.find({cleaner: id}, function(err, cleanings) {
+        if(err) {
+            res.status(404).json({
+                success: false,
+                message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
+            }).send();
+        } else {
+
+        }
+    };
 }
