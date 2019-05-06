@@ -232,6 +232,11 @@ paths:
           required: true
           type: string
           description: id of cleaning event to mark cleaned
+        - in: query
+          name: done
+          required: true
+          type: boolean
+          default: false
       responses:
         "200":
           description: Success
@@ -290,7 +295,7 @@ paths:
           type: string
           description: The start date of the cleanings to return
         - in: query
-          name: end_date
+          name: end
           required: false
           type: string
           description: The end date of the cleanings to return

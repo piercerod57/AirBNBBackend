@@ -25,6 +25,7 @@ var Cleanings = require('./Cleanings');
   In the starter/skeleton project the 'get' operation on the '/hello' path has an operationId named 'hello'.  Here,
   we specify that in the exports of this module that 'hello' maps to the function named 'hello'
  */
+<<<<<<< HEAD
 // module.exports = {
 //     updatecleanings: updatecleanings, // Load cleanings for all properties
 //     updatecleaning: updatecleaning,  // Mark cleaning completed
@@ -33,3 +34,12 @@ var Cleanings = require('./Cleanings');
 //     getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
 // };
 
+=======
+module.exports = {
+    //updatecleanings: updatecleanings, // Load cleanings for all properties
+    //updatecleaning: updatecleaning,  // Mark cleaning completed
+    //updatepropertycleanings: updatepropertycleanings, // Load cleanings for single property by id
+    //getcleanercleanings: getcleanercleanings, // Get list of all cleanings for a cleaner
+    //getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
+};
+>>>>>>> 375bbfc42bd983b640b03ebe184f2870d01217e2
