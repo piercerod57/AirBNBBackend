@@ -42,7 +42,8 @@
     "cors": "^2.8.5",
     "mongoose": "^5.0.9",
     "mongodb": "^3.2.3",
-    "swagger-express-mw": "^0.1.0"
+    "swagger-express-mw": "^0.1.0",
+    "ical": "^0.6.0"
   },
   "devDependencies": {
     "should": "^7.1.0",
