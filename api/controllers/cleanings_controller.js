@@ -334,6 +334,7 @@ function getcleanercleanings (req, res) {
                     message: `No cleanings found for Cleaner id: ${id}!`
                 }).send();
             } else {
+                console.log(cleanings);
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
