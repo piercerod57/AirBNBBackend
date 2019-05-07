@@ -126,16 +126,17 @@ function updatecleanings(req, res){
                        console.log('Updating Future documents');
                        console.log(docs);
                    });
-                   res.status(200).json({
-                       message: "Updated cleanings"
-                   });
+
                });
            });
        }
     });
+    res.status(200).json({
+        message: "Updated cleanings"
+    });
 }
 
-function updatepropertycleanings(req, res) {
+function updatepropertycleanings(req, res,) {
     var id = req.swagger.params.id.value;
     Property.findById(id, function (err, property) {
         if (err) {
@@ -192,7 +193,7 @@ function updatepropertycleanings(req, res) {
                         'property': ObjectId(property._id).toHexString(),
                         'start': {$gte: new Date(Date.now()).toISOString()}
                     }, function (err, doc) {
-                        if (err) console.log(err);
+                        if (err) console.log(err); // return res.status(500).jsonp({status : 500, message: err.message });
                         if (doc) {
                             console.log('Deleting documents for this property');
                             //console.log(doc)
@@ -201,13 +202,14 @@ function updatepropertycleanings(req, res) {
                             console.log('Updating Future documents');
                             console.log(docs);
                         });
-                        res.status(200).json({
-                            message: "Updated cleanings"
-                        });
+
                     });
                 });
             }
         }
+    });
+    res.status(200).json({
+        message: "Updated cleanings"
     });
 }
 
@@ -279,6 +281,7 @@ function getpropertycleanings (req, res) {
                     message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
                 });
             } else {
+                console.log('cleanings for property: ' + cleanings)
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
