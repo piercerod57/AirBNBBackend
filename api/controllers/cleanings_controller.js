@@ -212,6 +212,7 @@ function updatepropertycleanings(req, res) {
 }
 
 function getcleanercleanings (req, res) {
+    var id = req.swagger.params.id.value;
     var start = undefined, end = undefined;
     if (req.swagger.params.start.value !== undefined)
         start = req.swagger.params.start.value;
