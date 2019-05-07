@@ -213,8 +213,11 @@ function updatepropertycleanings(req, res) {
 
 function getcleanercleanings (req, res) {
     let id = req.swagger.params.id.value;
-    let start = req.swagger.query.start;
-    let end = req.swagger.query.end;
+    var start, end;
+    if (req.swagger.query.start)
+        start = req.swagger.query.start;
+    if (req.swagger.query.end)
+        end = req.swagger.query.end;
     if (start != undefined && end != undefined) {
         Cleaning.aggregate([
             {
@@ -343,8 +346,11 @@ function getcleanercleanings (req, res) {
 
 function getpropertycleanings (req, res) {
     let id = req.swagger.params.id.value;
-    let start = req.swagger.query.start;
-    let end = req.swagger.query.end;
+    var start, end;
+    if (req.swagger.query.start)
+        start = req.swagger.query.start;
+    if (req.swagger.query.end)
+        end = req.swagger.query.end;
     if (start != undefined && end != undefined) {
         Cleaning.aggregate([
             {

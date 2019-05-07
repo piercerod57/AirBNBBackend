@@ -288,7 +288,7 @@ paths:
           name: id
           required: true
           type: string
-          description: The id of the property
+          description: The id of the cleaner
         - in: query
           name: start
           required: false
