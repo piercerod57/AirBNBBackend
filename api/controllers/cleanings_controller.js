@@ -42,7 +42,7 @@ module.exports = {
     updatecleaning: updatecleaning,  // Mark cleaning completed
     updatepropertycleanings: updatepropertycleanings, // Load cleanings for single property by id
     getcleanercleanings: getcleanercleanings, // Get list of all cleanings for a cleaner
-    //getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
+    getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
 };
 
 function updatecleaning(req, res) {

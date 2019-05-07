@@ -91,7 +91,7 @@ function insertproperty(req, res) {
     property.cleaner = req.swagger.params.property.value.cleaner;
     property.calendar = req.swagger.params.property.value.calendar;
 
-    property.save(function (err) {
+    property.save(function (err, property) {
         if(err) {
             if(err.code === 11000) {
                 return res.status(409).json({success: false, message: 'A property with that id already exists'}).send()
@@ -102,7 +102,8 @@ function insertproperty(req, res) {
 
         res.status(200).json({
             success: true,
-            message: `${property.name} added!`
+            message: `${property.name} added!`,
+            property
         });
     });
 }
