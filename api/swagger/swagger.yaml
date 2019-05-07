@@ -396,11 +396,11 @@ definitions:
   Cleaning:
     type: object
     required:
-      - start
-      - end
-      - property
-      - staff
-      - complete
+       - start
+       - end
+       - cleaned
+       - property
+       - cleaner
     properties:
       start:
         type: string
@@ -408,12 +408,13 @@ definitions:
       end:
         type: string
         format: date
+      cleaned:
+        type: boolean
       property:
         type: string
-      staff:
+      cleaner:
         type: string
-      completed:
-        type: boolean
+
   CleaningsResponse:
     # Used as response for:
     #      /cleaners/{id}/cleanings to return a list of cleanings for this cleaner

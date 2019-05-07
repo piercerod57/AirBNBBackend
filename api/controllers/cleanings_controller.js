@@ -280,11 +280,12 @@ function getcleanercleanings (req, res) {
                     message: `No cleanings for Cleaner id: ${id} within the date range specified.`
                 }).send();
             } else {
+                console.log(cleanings);
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else if (start !== undefined && end === undefined) {
@@ -339,7 +340,7 @@ function getcleanercleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     }
@@ -471,7 +472,7 @@ function getpropertycleanings (req, res) {
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
-                    cleanings: cleanings
+                    cleanings: cleanings[0]
                 }).send();
             }
         });
