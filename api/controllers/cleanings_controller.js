@@ -222,5 +222,5 @@ function getcleanercleanings (req, res) {
         } else {
 
         }
-    };
+    });
 }
