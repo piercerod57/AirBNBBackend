@@ -42,7 +42,7 @@ module.exports = {
     updatecleaning: updatecleaning,  // Mark cleaning completed
     updatepropertycleanings: updatepropertycleanings, // Load cleanings for single property by id
     getcleanercleanings: getcleanercleanings, // Get list of all cleanings for a cleaner
-    //getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
+    getpropertycleanings: getpropertycleanings, // Get list of all cleanings for a property
 };
 
 function updatecleaning(req, res) {
@@ -213,14 +213,78 @@ function updatepropertycleanings(req, res) {
 
 function getcleanercleanings (req, res) {
     let id = req.swagger.params.id.value;
-    Cleaning.find({cleaner: id}, function(err, cleanings) {
-        if(err) {
-            res.status(404).json({
-                success: false,
-                message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
-            }).send();
-        } else {
+    let start = req.swagger.params.start.value;
+    let end = req.swagger.params.end.value;
 
-        }
-    });
+    if (start != undefined && end != undefined){
+
+        Cleaning.find({cleaner: id, start: start, end: end}, function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
+                });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                });
+            }
+        });
+    }else{
+        Cleaning.find({cleaner: id}, function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
+                });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                });
+            }
+        });
+    }
+}
+
+function getpropertycleanings (req, res) {
+    let id = req.swagger.params.id.value;
+    let start = req.swagger.params.start.value;
+    let end = req.swagger.params.end.value;
+
+    if (start != undefined && end != undefined){
+
+        Cleaning.find({property: id, start: start, end: end}, function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
+                });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                });
+            }
+        });
+    }else{
+        Cleaning.find({property: id}, function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
+                });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                });
+            }
+        });
+    }
 }
