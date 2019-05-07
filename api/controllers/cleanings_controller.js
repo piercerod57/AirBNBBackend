@@ -14,7 +14,7 @@ var util = require('util');
 const ical = require('ical');
 var Cleaning = require('./Cleanings');
 var Property = require('./Properties');
-const ObjectId = require('mongoose').types.ObjectId;
+const ObjectId = require('mongoose').mongo.ObjectId;
 
 
 const DEFAULT_WINDOW = 7;
@@ -322,7 +322,7 @@ function getcleanercleanings (req, res) {
             }
         });
     } else {
-        Cleaning.find({cleaner: ObjectId(id)}, function (err, cleanings) {
+        Cleaning.find({cleaner: ObjectId(id).toHexString()}, function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
