@@ -212,7 +212,6 @@ function updatepropertycleanings(req, res) {
 }
 
 function getcleanercleanings (req, res) {
-    let id = req.swagger.params.id.value;
     var start = undefined, end = undefined;
     if (req.swagger.params.start.value !== undefined)
         start = req.swagger.params.start.value;
@@ -322,7 +321,7 @@ function getcleanercleanings (req, res) {
             }
         });
     } else {
-        Cleaning.find({cleaner: id}, function (err, cleanings) {
+        Cleaning.find({cleaner: ObjectId(id)}, function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
