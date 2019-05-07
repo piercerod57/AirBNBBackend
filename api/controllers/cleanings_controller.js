@@ -14,7 +14,7 @@ var util = require('util');
 const ical = require('ical');
 var Cleaning = require('./Cleanings');
 var Property = require('./Properties');
-const ObjectId = require('mongoose').mongo.ObjectId;
+const ObjectId = require('mongoose').types.ObjectId;
 
 
 const DEFAULT_WINDOW = 7;
@@ -351,7 +351,7 @@ function getpropertycleanings (req, res) {
         start = req.swagger.params.start.value;
     if (req.swagger.params.end.value !== undefined)
         end = req.swagger.params.end.value;
-    if (start != undefined && end != undefined) {
+    if (start !== undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
