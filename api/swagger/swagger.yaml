@@ -399,8 +399,8 @@ definitions:
       - start
       - end
       - property
-      - cleaner
-      - cleaned
+      - staff
+      - complete
     properties:
       start:
         type: string
