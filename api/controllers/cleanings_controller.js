@@ -214,10 +214,10 @@ function updatepropertycleanings(req, res) {
 function getcleanercleanings (req, res) {
     let id = req.swagger.params.id.value;
     var start = undefined, end = undefined;
-    if (req.swagger.params.start !== undefined)
-        start = req.swagger.params.start;
-    if (req.swagger.params.end !== undefined)
-        end = req.swagger.params.end;
+    if (req.swagger.params.start.value !== undefined)
+        start = req.swagger.params.start.value;
+    if (req.swagger.params.end.value !== undefined)
+        end = req.swagger.params.end.value;
     if (start !== undefined && end !== undefined) {
         Cleaning.aggregate([
             {
@@ -347,10 +347,10 @@ function getcleanercleanings (req, res) {
 function getpropertycleanings (req, res) {
     let id = req.swagger.params.id.value;
     var start = undefined, end = undefined;
-    if (req.swagger.params.start !== undefined)
-        start = req.swagger.params.start;
-    if (req.swagger.params.end !== undefined)
-        end = req.swagger.params.end;
+    if (req.swagger.params.start.value !== undefined)
+        start = req.swagger.params.start.value;
+    if (req.swagger.params.end.value !== undefined)
+        end = req.swagger.params.end.value;
     if (start != undefined && end != undefined) {
         Cleaning.aggregate([
             {
