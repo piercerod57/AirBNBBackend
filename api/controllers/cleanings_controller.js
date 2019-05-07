@@ -218,7 +218,7 @@ function getcleanercleanings (req, res) {
         start = req.swagger.params.start;
     if (req.swagger.params.end !== undefined)
         end = req.swagger.params.end;
-    if (start != undefined && end != undefined) {
+    if (start !== undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -253,7 +253,7 @@ function getcleanercleanings (req, res) {
                 }).send();
             }
         });
-    } else if (start == undefined && end != undefined) {
+    } else if (start === undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -287,7 +287,7 @@ function getcleanercleanings (req, res) {
                 }).send();
             }
         });
-    } else if (start != undefined && end == undefined) {
+    } else if (start !== undefined && end === undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -386,7 +386,7 @@ function getpropertycleanings (req, res) {
                 }).send();
             }
         });
-    } else if (start == undefined && end != undefined) {
+    } else if (start === undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -420,7 +420,7 @@ function getpropertycleanings (req, res) {
                 }).send();
             }
         });
-    } else if (start != undefined && end == undefined) {
+    } else if (start !== undefined && end === undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
