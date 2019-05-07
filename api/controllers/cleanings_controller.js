@@ -328,7 +328,7 @@ function getcleanercleanings (req, res) {
                     success: false,
                     message: `Error encountered while trying to find cleanings assigned to Cleaner id: ${id}!`
                 }).send();
-            } else if (cleanings == []) {
+            } else if (!cleanings.length) {
                 res.status(200).json({
                     success: true,
                     message: `No cleanings found for Cleaner id: ${id}!`
