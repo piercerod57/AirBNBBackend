@@ -126,17 +126,16 @@ function updatecleanings(req, res){
                        console.log('Updating Future documents');
                        console.log(docs);
                    });
-
+                   res.status(200).json({
+                       message: "Updated cleanings"
+                   });
                });
            });
        }
     });
-    res.status(200).json({
-        message: "Updated cleanings"
-    });
 }
 
-function updatepropertycleanings(req, res,) {
+function updatepropertycleanings(req, res) {
     var id = req.swagger.params.id.value;
     Property.findById(id, function (err, property) {
         if (err) {
@@ -193,7 +192,7 @@ function updatepropertycleanings(req, res,) {
                         'property': ObjectId(property._id).toHexString(),
                         'start': {$gte: new Date(Date.now()).toISOString()}
                     }, function (err, doc) {
-                        if (err) console.log(err); // return res.status(500).jsonp({status : 500, message: err.message });
+                        if (err) console.log(err);
                         if (doc) {
                             console.log('Deleting documents for this property');
                             //console.log(doc)
@@ -202,51 +201,141 @@ function updatepropertycleanings(req, res,) {
                             console.log('Updating Future documents');
                             console.log(docs);
                         });
-
+                        res.status(200).json({
+                            message: "Updated cleanings"
+                        });
                     });
                 });
             }
         }
     });
-    res.status(200).json({
-        message: "Updated cleanings"
-    });
 }
 
 function getcleanercleanings (req, res) {
     let id = req.swagger.params.id.value;
-    let start = req.swagger.params.start.value;
-    let end = req.swagger.params.end.value;
-
-    if (start != undefined && end != undefined){
-
-        Cleaning.find({cleaner: id, start: start, end: end}, function (err, cleanings) {
+    let start = req.swagger.query.start;
+    let end = req.swagger.query.end;
+    if (start != undefined && end != undefined) {
+        Cleaning.aggregate([
+            {
+                '$match': {
+                    'cleaner': ObjectId(id),
+                    'start': {
+                        $gte: start,
+                        $lt: end
+                    }
+                }
+            },
+            {
+                '$sort': {
+                    'start': 1
+                }
+            }
+        ], function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
-                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
-                });
+                    message: `Error encountered while trying to find cleanings assigned to Cleaner id: ${id}!`
+                }).send();
+            } else if (cleanings == []){
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`
+                }).send();
             } else {
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                });
+                }).send();
             }
         });
-    }else{
+    } else if (start == undefined && end != undefined) {
+        Cleaning.aggregate([
+            {
+                '$match': {
+                    'cleaner': ObjectId(id),
+                    'start': {
+                        $lt: end
+                    }
+                }
+            },
+            {
+                '$sort': {
+                    'start': 1
+                }
+            }
+        ], function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings assigned to Cleaner id: ${id}!`
+                }).send();
+            } else if (cleanings == []){
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`
+                }).send();
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                }).send();
+            }
+        });
+    } else if (start != undefined && end == undefined) {
+        Cleaning.aggregate([
+            {
+                '$match': {
+                    'cleaner': ObjectId(id),
+                    'start': {
+                        $gte: start
+                    }
+                }
+            },
+            {
+                '$sort': {
+                    'start': 1
+                }
+            }
+        ], function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings assigned to Cleaner id: ${id}!`
+                }).send();
+            } else if (cleanings == []){
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`
+                }).send();
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                }).send();
+            }
+        });
+    } else {
         Cleaning.find({cleaner: id}, function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
-                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
-                });
+                    message: `Error encountered while trying to find cleanings assigned to Cleaner id: ${id}!`
+                }).send();
+            } else if (cleanings == []) {
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings found for Cleaner id: ${id}!`
+                }).send();
             } else {
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                });
+                }).send();
             }
         });
     }
@@ -254,39 +343,129 @@ function getcleanercleanings (req, res) {
 
 function getpropertycleanings (req, res) {
     let id = req.swagger.params.id.value;
-    let start = req.swagger.params.start.value;
-    let end = req.swagger.params.end.value;
-
-    if (start != undefined && end != undefined){
-
-        Cleaning.find({property: id, start: start, end: end}, function (err, cleanings) {
+    let start = req.swagger.query.start;
+    let end = req.swagger.query.end;
+    if (start != undefined && end != undefined) {
+        Cleaning.aggregate([
+            {
+                '$match': {
+                    'property': ObjectId(id),
+                    'start': {
+                        $gte: start,
+                        $lt: end
+                    }
+                }
+            },
+            {
+                '$sort': {
+                    'start': 1
+                }
+            }
+        ], function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
-                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
-                });
+                    message: `Error encountered while trying to find cleanings assigned to property id: ${id}!`
+                }).send();
+            } else if (cleanings == []){
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings for property id: ${id} within the date range specified.`
+                }).send();
             } else {
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                });
+                }).send();
             }
         });
-    }else{
-        Cleaning.find({property: id}, function (err, cleanings) {
+    } else if (start == undefined && end != undefined) {
+        Cleaning.aggregate([
+            {
+                '$match': {
+                    'property': ObjectId(id),
+                    'start': {
+                        $lt: end
+                    }
+                }
+            },
+            {
+                '$sort': {
+                    'start': 1
+                }
+            }
+        ], function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
-                    message: `Error encountered while trying to find cleanings asssigned to Cleaner id: ${id}!`
-                });
+                    message: `Error encountered while trying to find cleanings assigned to property id: ${id}!`
+                }).send();
+            } else if (cleanings == []){
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings for property id: ${id} within the date range specified.`
+                }).send();
             } else {
-                console.log('cleanings for property: ' + cleanings)
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                });
+                }).send();
+            }
+        });
+    } else if (start != undefined && end == undefined) {
+        Cleaning.aggregate([
+            {
+                '$match': {
+                    'property': ObjectId(id),
+                    'start': {
+                        $gte: start
+                    }
+                }
+            },
+            {
+                '$sort': {
+                    'start': 1
+                }
+            }
+        ], function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings assigned to property id: ${id}!`
+                }).send();
+            } else if (cleanings == []){
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings for property id: ${id} within the date range specified.`
+                }).send();
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                }).send();
+            }
+        });
+    } else {
+        Cleaning.find({cleaner: id}, function (err, cleanings) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings assigned to property id: ${id}!`
+                }).send();
+            } else if (cleanings == []) {
+                res.status(200).json({
+                    success: true,
+                    message: `No cleanings found for property id: ${id}!`
+                }).send();
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: cleanings.length,
+                    cleanings: cleanings
+                }).send();
             }
         });
     }
