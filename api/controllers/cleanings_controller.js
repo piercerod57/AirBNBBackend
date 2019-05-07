@@ -213,7 +213,33 @@ function updatepropertycleanings(req, res) {
 
 function getcleanercleanings (req, res) {
     let id = req.swagger.params.id.value;
-    Cleaning.find({cleaner: id}, function(err, cleanings) {
+    let start = new Date();
+    start = start.getFullYear() + start.getMonth() + start.getDate();
+    let end = start;
+    end[1]++;
+    if (req.swagger.query.start)
+        start = req.swagger.query.start;
+    if (req.swagger.query.end)
+        end = req.swagger.query.end;
+    Cleaning.aggregate([
+        {
+            '$match': {
+                'cleaner': ObjectId(id),
+                'start': {
+                    $gte: start,
+                    $lt: end
+                }
+            }
+        },
+        {
+            '$sort': {
+                'start' : 1
+            }
+        },
+        {
+
+        }
+    ], function(err, cleanings) {
         if(err) {
             res.status(404).json({
                 success: false,
@@ -221,6 +247,7 @@ function getcleanercleanings (req, res) {
             }).send();
         } else {
 
-        }
+        })
+        ({cleaner: id},
     };
 }
