@@ -23,6 +23,13 @@ paths:
     x-swagger-router-controller: properties_controller
     get:
       description: Returns a list of properties to the caller
+      x-swagger-router-controller: properties_controller
+      parameters:
+        - in: query
+          name: cleanings
+          required: true
+          type: boolean
+          description: return all future cleanings with the properties
       operationId: getproperties
       responses:
         "200":
