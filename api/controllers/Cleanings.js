@@ -10,8 +10,8 @@ mongoose.set('useCreateIndex', true);
 var CleaningSchema = new Schema({
     start: {type: String, required: true},
     end: {type: String, required: true},
-    property: {type: ObjectId, required: true}, // TODO This may need some tweaking to work
-    cleaner: {type: ObjectId, required: true}, // TODO This may need some tweaking to work
+    property: {type: ObjectId, required: true},
+    cleaner: {type: ObjectId, required: true},
     cleaned: { type: Boolean, default: false}
 });
 

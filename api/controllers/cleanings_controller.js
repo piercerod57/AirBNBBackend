@@ -58,18 +58,22 @@ function updatecleaning(req, res) {
                 res.send(err);
             }
         } else {
-            if(!req.swagger.query.done){
+            if(!req.swagger.params.done.value){
                 res.status(400).json({
                     success: false,
                     message: `Pass Boolean argument 'done' in query string.`
                 }).send();
             } else{
-                cleaning.cleaned = req.swagger.query.done;
-                res.status(200).json({
-                    success: true,
-                    message: "Completion status updated.",
-                    size: 1,
-                    cleaning: [cleaning]
+                cleaning.cleaned = req.swagger.params.done.value;
+                cleaning.save(function (err){
+                    if(err) res.send(err)
+
+                    res.status(200).json({
+                        success: true,
+                        message: "Completion status updated.",
+                        size: 1,
+                        cleaning: [cleaning]
+                    });
                 });
             }
         }

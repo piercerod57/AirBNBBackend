@@ -230,7 +230,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /cleaning/{id}:
     x-swagger-router-controller: cleanings_controller
-    put:
+    get:
       description: Update the cleaning (Mark it as completed)
       operationId: updatecleaning
       parameters:
