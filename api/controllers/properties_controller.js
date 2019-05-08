@@ -71,14 +71,39 @@ function getproperty(req, res) {
 }
 
 function getproperties(req, res) {
-    Property.find(function (err, properties) {
-        if (err) res.send(err);
-        res.status(200).json({
-            success: true,
-            size: properties.length,
-            properties: properties
-        })
-    });
+    if (req.swagger.params.cleanings.value === true) {
+        Property.aggregate([
+            {
+                $lookup: {
+                    from: 'cleanings',
+                    localField: '_id',
+                    foreignField: 'property',
+                    as: 'cleanings'
+                }
+            }], function (err, properties) {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: `Error encountered while trying to find cleanings assigned to properties!`
+                }).send();
+            } else {
+                res.status(200).json({
+                    success: true,
+                    size: properties.length,
+                    properties: properties
+                }); 
+            }
+        });
+    } else {
+        Property.find(function (err, properties) {
+            if (err) res.send(err);
+            res.status(200).json({
+                success: true,
+                size: properties.length,
+                properties: properties
+            })
+        });
+    }
 }
 
 function insertproperty(req, res) {

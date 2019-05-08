@@ -212,10 +212,13 @@ function updatepropertycleanings(req, res) {
 }
 
 function getcleanercleanings (req, res) {
-    let id = req.swagger.params.id.value;
-    let start = req.swagger.query.start;
-    let end = req.swagger.query.end;
-    if (start != undefined && end != undefined) {
+    var id = req.swagger.params.id.value;
+    var start = undefined, end = undefined;
+    if (req.swagger.params.start.value !== undefined)
+        start = req.swagger.params.start.value;
+    if (req.swagger.params.end.value !== undefined)
+        end = req.swagger.params.end.value;
+    if (start !== undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -247,10 +250,10 @@ function getcleanercleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
-    } else if (start == undefined && end != undefined) {
+    } else if (start === undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -277,14 +280,15 @@ function getcleanercleanings (req, res) {
                     message: `No cleanings for Cleaner id: ${id} within the date range specified.`
                 }).send();
             } else {
+                console.log(cleanings);
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
-    } else if (start != undefined && end == undefined) {
+    } else if (start !== undefined && end === undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -315,27 +319,28 @@ function getcleanercleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else {
-        Cleaning.find({cleaner: id}, function (err, cleanings) {
+        Cleaning.find({cleaner: ObjectId(id).toHexString()}, function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
                     message: `Error encountered while trying to find cleanings assigned to Cleaner id: ${id}!`
                 }).send();
-            } else if (cleanings == []) {
+            } else if (!cleanings.length) {
                 res.status(200).json({
                     success: true,
                     message: `No cleanings found for Cleaner id: ${id}!`
                 }).send();
             } else {
+                console.log(cleanings);
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     }
@@ -343,9 +348,12 @@ function getcleanercleanings (req, res) {
 
 function getpropertycleanings (req, res) {
     let id = req.swagger.params.id.value;
-    let start = req.swagger.query.start;
-    let end = req.swagger.query.end;
-    if (start != undefined && end != undefined) {
+    var start = undefined, end = undefined;
+    if (req.swagger.params.start.value !== undefined)
+        start = req.swagger.params.start.value;
+    if (req.swagger.params.end.value !== undefined)
+        end = req.swagger.params.end.value;
+    if (start !== undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -377,10 +385,10 @@ function getpropertycleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
-    } else if (start == undefined && end != undefined) {
+    } else if (start === undefined && end !== undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -411,10 +419,10 @@ function getpropertycleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
-    } else if (start != undefined && end == undefined) {
+    } else if (start !== undefined && end === undefined) {
         Cleaning.aggregate([
             {
                 '$match': {
@@ -445,11 +453,11 @@ function getpropertycleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else {
-        Cleaning.find({cleaner: id}, function (err, cleanings) {
+        Cleaning.find({property: ObjectId(id).toHexString()}, function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
@@ -465,7 +473,7 @@ function getpropertycleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     }

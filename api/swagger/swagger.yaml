@@ -23,6 +23,13 @@ paths:
     x-swagger-router-controller: properties_controller
     get:
       description: Returns a list of properties to the caller
+      x-swagger-router-controller: properties_controller
+      parameters:
+        - in: query
+          name: cleanings
+          required: true
+          type: boolean
+          description: return all future cleanings with the properties
       operationId: getproperties
       responses:
         "200":
@@ -288,7 +295,7 @@ paths:
           name: id
           required: true
           type: string
-          description: The id of the property
+          description: The id of the cleaner
         - in: query
           name: start
           required: false
@@ -396,24 +403,23 @@ definitions:
   Cleaning:
     type: object
     required:
-      - start
-      - end
-      - property
-      - staff
-      - completed
+       - cleaned
+       - property
+       - cleaner
+       - start
+       - end
     properties:
-      start:
-        type: string
-        format: date
-      end:
-        type: string
-        format: date
       property:
         type: string
-      staff:
+      cleaner:
         type: string
-      completed:
+      cleaned:
         type: boolean
+      start:
+        type: string
+      end:
+        type: string
+
   CleaningsResponse:
     # Used as response for:
     #      /cleaners/{id}/cleanings to return a list of cleanings for this cleaner
