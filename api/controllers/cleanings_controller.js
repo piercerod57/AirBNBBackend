@@ -247,7 +247,8 @@ function getcleanercleanings (req, res) {
             } else if (cleanings == []){
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`
+                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`,
+                    cleanings: []
                 }).send();
             } else {
                 res.status(200).json({
@@ -281,7 +282,8 @@ function getcleanercleanings (req, res) {
             } else if (cleanings == []){
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`
+                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`,
+                    cleanings: []
                 }).send();
             } else {
                 console.log(cleanings);
@@ -316,7 +318,8 @@ function getcleanercleanings (req, res) {
             } else if (cleanings == []){
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`
+                    message: `No cleanings for Cleaner id: ${id} within the date range specified.`,
+                    cleanings: []
                 }).send();
             } else {
                 res.status(200).json({
@@ -336,7 +339,8 @@ function getcleanercleanings (req, res) {
             } else if (!cleanings.length) {
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings found for Cleaner id: ${id}!`
+                    message: `No cleanings found for Cleaner id: ${id}!`,
+                    cleanings: []
                 }).send();
             } else {
                 console.log(cleanings);
@@ -382,7 +386,8 @@ function getpropertycleanings (req, res) {
             } else if (cleanings == []){
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings for property id: ${id} within the date range specified.`
+                    message: `No cleanings for property id: ${id} within the date range specified.`,
+                    cleanings: []
                 }).send();
             } else {
                 res.status(200).json({
@@ -416,7 +421,8 @@ function getpropertycleanings (req, res) {
             } else if (cleanings == []){
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings for property id: ${id} within the date range specified.`
+                    message: `No cleanings for property id: ${id} within the date range specified.`,
+                    cleanings: []
                 }).send();
             } else {
                 res.status(200).json({
@@ -450,7 +456,8 @@ function getpropertycleanings (req, res) {
             } else if (cleanings == []){
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings for property id: ${id} within the date range specified.`
+                    message: `No cleanings for property id: ${id} within the date range specified.`,
+                    cleanings: []
                 }).send();
             } else {
                 res.status(200).json({
@@ -470,7 +477,8 @@ function getpropertycleanings (req, res) {
             } else if (cleanings == []) {
                 res.status(200).json({
                     success: true,
-                    message: `No cleanings found for property id: ${id}!`
+                    message: `No cleanings found for property id: ${id}!`,
+                    cleanings: []
                 }).send();
             } else {
                 res.status(200).json({
