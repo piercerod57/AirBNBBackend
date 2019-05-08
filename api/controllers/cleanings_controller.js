@@ -457,7 +457,7 @@ function getpropertycleanings (req, res) {
             }
         });
     } else {
-        Cleaning.find({property: ObjectID(id).toHexString()}, function (err, cleanings) {
+        Cleaning.find({property: ObjectId(id).toHexString()}, function (err, cleanings) {
             if (err) {
                 res.status(404).json({
                     success: false,
