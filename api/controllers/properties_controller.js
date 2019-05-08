@@ -91,7 +91,7 @@ function getproperties(req, res) {
                     success: true,
                     size: properties.length,
                     properties: properties
-                });
+                }); 
             }
         });
     } else {
