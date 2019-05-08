@@ -130,12 +130,12 @@ function updatecleanings(req, res){
                        console.log('Updating Future documents');
                        console.log(docs);
                    });
-                   res.status(200).json({
-                       message: "Updated cleanings"
-                   });
                });
            });
        }
+       res.status(200).json({
+           message: "Updated cleanings"
+       });
     });
 }
 
