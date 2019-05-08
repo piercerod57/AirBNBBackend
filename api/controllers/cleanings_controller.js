@@ -250,7 +250,7 @@ function getcleanercleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else if (start === undefined && end !== undefined) {
@@ -319,7 +319,7 @@ function getcleanercleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else {
@@ -385,7 +385,7 @@ function getpropertycleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else if (start === undefined && end !== undefined) {
@@ -419,7 +419,7 @@ function getpropertycleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else if (start !== undefined && end === undefined) {
@@ -453,7 +453,7 @@ function getpropertycleanings (req, res) {
                     success: true,
                     size: cleanings.length,
                     cleanings: cleanings
-                }).send();
+                });
             }
         });
     } else {
@@ -472,8 +472,8 @@ function getpropertycleanings (req, res) {
                 res.status(200).json({
                     success: true,
                     size: cleanings.length,
-                    cleanings: cleanings[0]
-                }).send();
+                    cleanings: cleanings
+                });
             }
         });
     }

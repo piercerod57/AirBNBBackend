@@ -396,23 +396,21 @@ definitions:
   Cleaning:
     type: object
     required:
-       - start
-       - end
        - cleaned
        - property
        - cleaner
+       - start
+       - end
     properties:
-      start:
-        type: string
-        format: date
-      end:
-        type: string
-        format: date
-      cleaned:
-        type: boolean
       property:
         type: string
       cleaner:
+        type: string
+      cleaned:
+        type: boolean
+      start:
+        type: string
+      end:
         type: string
 
   CleaningsResponse:
